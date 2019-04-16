@@ -26,15 +26,12 @@ module FindMovies
 
     def narrow_by_self(movie_list:, input:)
       movie_list.select do |movie|
-        case true
-        when self == Genre
-          class_list = movie.genres
-        when self == Actor
-          class_list = movie.actors
-        end
-        class_list.include?(self.find_by(name: input))
+      classes = {
+      'Genre' => movie.genres,
+      # 'Actor' => movie.actors
+      }
+        classes[self.name].include?(self.find_by(name: input))
       end
     end
-
   end
 end
