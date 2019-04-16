@@ -1,33 +1,37 @@
 require 'themoviedb-api'
 require 'pry'
 
+# Authenticate TMDB API
 Tmdb::Api.key("9a306747f13ec661784ee120bacdd6fc")
+
+# Populate genres table through TMDB API
 Tmdb::Genre.movie_list.each do |genre|
   Genre.find_or_create_by(api_id: genre.id, name: genre.name.downcase)
 end
 
-# Tmdb::Genre.movies(28).results
 
+# Get movies for each genre from TMBD
 movie_list = Tmdb::Genre.movie_list.map do |genre|
   Tmdb::Genre.movies(genre.id).results
 end.flatten
 
+# Populate movies table with movies from TMDB
 movie_list.each do |movie|
   Movie.find_or_create_by(
     api_id: movie.id,
     name: movie.title,
-    description: movie.overview,
+    description: movie.overview
   )
 end
 
+# Join movies and genres through id and api_id
 movie_list.each do |movie|
-  movie.genre_ids.each do |genre|
-    MovieGenre.find_or_create_by(movie_id: movie.id, genre_id: genre)
+  movie.genre_ids.each do |genre_id|
+    MovieGenre.find_or_create_by(
+      movie_api_id: movie.id,
+      genre_api_id: genre_id,
+      movie_id: Movie.find_by(api_id: movie.id).id,
+      genre_id: Genre.find_by(api_id: genre_id).id
+    )
   end
-end
-
-MovieGenre.all.each do |movie_genre|
-  movie_genre.movie_id = Movie.find_or_create_by(api_id: movie_genre.movie_api_id).id
-  movie_genre.genre_id = Genre.find_or_create_by(api_id: movie_genre.genre_api_id).id
-  movie_genre.save
 end
