@@ -3,7 +3,7 @@ require 'pry'
 
 Tmdb::Api.key("9a306747f13ec661784ee120bacdd6fc")
 Tmdb::Genre.movie_list.each do |genre|
-  Genre.find_or_create_by(api_id: genre.id, name: genre.name)
+  Genre.find_or_create_by(api_id: genre.id, name: genre.name.downcase)
 end
 
 # Tmdb::Genre.movies(28).results
