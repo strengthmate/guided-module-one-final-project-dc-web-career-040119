@@ -4,7 +4,8 @@ module FindMovies
 
     # Store inputs for this session
     PREVIOUSLY_ENTERED = {
-      'Genre' => []
+      'Genre' => [],
+      'Actor' => []
     }.freeze
 
     # Get and store input
@@ -18,9 +19,23 @@ module FindMovies
     def output_previously_entered
       PREVIOUSLY_ENTERED[self.name].pop
       PREVIOUSLY_ENTERED.each do |key,value|
+        value.each do |attribute|
+          attribute.split(" ").each do |a|
+            a.split("-")
+          end
+        end
+      PREVIOUSLY_ENTERED.each do |element|
+        element.capitalize
+      end
+      PREVIOUSLY_ENTERED.each do |element|
+        if element.is_a? Array && element.size > 1
+           element.join("-")
+        end.flatten
+      end
         puts "#{key}: #{value.join(", ")}".colorize(:yellow)
       end
     end
+    # Full name abc-def last, split "-" " ", [[abc, def], last,] attribute.split(" ") capitalize each item  Abc-Def Last
 
     # Message for too many inputs
     def too_many(prev_movie_list)
@@ -33,7 +48,7 @@ module FindMovies
       movie_list.select do |movie|
         classes = {
           'Genre' => movie.genres,
-          # 'Actor' => movie.actors
+          'Actor' => movie.actors
         }
         classes[self.name].include?(self.find_by(name: input))
       end
