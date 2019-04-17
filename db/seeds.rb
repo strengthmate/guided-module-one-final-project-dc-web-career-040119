@@ -35,3 +35,22 @@ movie_list.each do |movie|
     )
   end
 end
+
+character_list = []
+
+  movie_list.each_with_index  do |movie,index|
+    if index % 40 == 0
+      sleep(11)
+    end
+    character_list << Tmdb::Movie.cast(movie.id)
+
+end
+
+character_list.flatten!
+
+character_list.each do |character|
+  Actor.find_or_create_by(
+    api_id: character.id,
+    name: character.name.downcase,
+    )
+end
