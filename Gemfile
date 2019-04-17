@@ -6,3 +6,4 @@ gem "sqlite3"
 gem "pry"
 gem "require_all"
 gem 'themoviedb-api'
+gem 'colorize', '~> 0.8.1'

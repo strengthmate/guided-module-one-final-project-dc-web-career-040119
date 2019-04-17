@@ -18,19 +18,17 @@ module FindMovies
     def output_previously_entered
       PREVIOUSLY_ENTERED[self.name].pop
       PREVIOUSLY_ENTERED.each do |key,value|
-        puts "#{key}: #{value.join(", ")}"
+        puts "#{key}: #{value.join(", ")}".colorize(:yellow)
       end
     end
 
     # Message for too many inputs
     def too_many(prev_movie_list)
-      puts "You have entered too many #{self.name.downcase}s."
-      puts "Here are reccommendations for:"
-      self.output_previously_entered
-      puts prev_movie_list.map {|movie| movie.name}
+      puts "You have entered too many #{self.name.downcase}s.".colorize(:red)
+      movie_recommendations(prev_movie_list)
     end
 
-    #Helper for .narrow_movie_selection
+    #Helper for .get_movie_selection
     def narrow_by_self(movie_list:, input:)
       movie_list.select do |movie|
         classes = {
@@ -50,10 +48,15 @@ module FindMovies
       end
     end
 
-    def narrow_movie_selection(movie_list:)
+
+
+    # Narrow down suggestions
+    def get_movie_selection
+      movie_list = find_movies_by_input
       puts "Enter another #{self.name.downcase}"
       input = get_input
       while input != "done"
+
         prev_movie_list = movie_list
         movie_list = self.narrow_by_self(movie_list: movie_list, input: input)
 
@@ -65,9 +68,14 @@ module FindMovies
         puts "Enter another #{self.name.downcase}"
         input = get_input
       end
-      puts "Here are your reccommendations for:"
+      movie_recommendations(movie_list)
+    end
+
+    # Output movie recommendations
+    def movie_recommendations(movie_list)
+      puts "Here are your recommendations for:".colorize(:yellow)
       output_previously_entered
-      puts movie_list.map {|movie| movie.name}
+      puts movie_list.map {|movie| movie.name.colorize(:green)}
     end
 
 
