@@ -13,6 +13,8 @@ module FindMovies
       prev_movie_list: []
     }
 
+
+
     # Get and store input
     def get_input
       input = gets.strip.downcase

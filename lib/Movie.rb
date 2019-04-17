@@ -18,12 +18,12 @@ class Movie < ActiveRecord::Base
 
     selection = gets.strip.downcase
     case selection
-    when "1" || "actors"
+    when "1", "actors"
       Actor.new_get_movie_selection
-    when "2" || "genres"
+    when "2", "genres"
       Genre.new_get_movie_selection
-    when "3"
-      self.movie_recommendations(SELECTION[:movie_list])
+    when "3", "done"
+      self.movie_recommendations(selection[:movie_list])
     else
       puts "Input error! Try again."
       self.recommendation
