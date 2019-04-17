@@ -8,6 +8,11 @@ module FindMovies
       'Actor' => []
     }.freeze
 
+    SELECTION = {
+      movie_list: [],
+      prev_movie_list: []
+    }
+
     # Get and store input
     def get_input
       input = gets.strip.downcase
@@ -19,23 +24,19 @@ module FindMovies
     def output_previously_entered
       PREVIOUSLY_ENTERED[self.name].pop
       PREVIOUSLY_ENTERED.each do |key,value|
-        value.each do |attribute|
-          attribute.split(" ").each do |a|
-            a.split("-")
-          end
-        end
-      PREVIOUSLY_ENTERED.each do |element|
-        element.capitalize
-      end
-      PREVIOUSLY_ENTERED.each do |element|
-        if element.is_a? Array && element.size > 1
-           element.join("-")
-        end.flatten
-      end
         puts "#{key}: #{value.join(", ")}".colorize(:yellow)
       end
     end
-    # Full name abc-def last, split "-" " ", [[abc, def], last,] attribute.split(" ") capitalize each item  Abc-Def Last
+
+    def output_entered
+      puts "#" * 80
+      puts ""
+      puts "So far, you have entered".colorize(:red)
+      PREVIOUSLY_ENTERED[self.name]
+      PREVIOUSLY_ENTERED.each do |key,value|
+        puts "#{key}: #{value.join(", ")}".colorize(:yellow)
+      end
+    end
 
     # Message for too many inputs
     def too_many(prev_movie_list)
@@ -60,6 +61,27 @@ module FindMovies
       input = get_input
       unless input.downcase == "done"
         self.find_by(name: input).movies
+      end
+    end
+
+
+
+    def new_get_movie_selection
+      puts "Enter a film #{self.name.downcase}"
+      input = get_input
+      if SELECTION[:movie_list].empty?
+        SELECTION[:movie_list] = self.find_by(name: input).movies
+        output_entered
+        Movie.recommendation
+      else
+        SELECTION[:prev_movie_list] = SELECTION[:movie_list]
+        SELECTION[:movie_list] = self.narrow_by_self(movie_list: SELECTION[:movie_list], input: input)
+        if SELECTION[:movie_list].empty?
+          too_many(SELECTION[:prev_movie_list])
+        else
+          output_entered
+          Movie.recommendation
+        end
       end
     end
 

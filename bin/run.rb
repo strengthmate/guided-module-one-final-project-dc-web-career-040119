@@ -3,7 +3,9 @@ require "pry"
 
 
 
-# movie_list = Genre.find_movies_by_input
+#ask what the user wants to search by
+# after user enters item ask the next criteria
+#
+puts "Welcome!"
+Movie.recommendation
 
-Genre.get_movie_selection
-# Genre.narrow_movie_selection_by_genre(movie_list)
