@@ -61,6 +61,7 @@ module FindMovies
 
     #Helper for .get_movie_selection
     def narrow_by_self(input)
+      # binding.pry
       SELECTION[:movie_list].select do |movie|
         classes = {
           'Genre' => movie.genres,
