@@ -19,7 +19,19 @@ module FindMovies
         return
       end
       return self.not_an_option if self.find_by(name: input).nil?
-      PREVIOUSLY_ENTERED[self.name] << input
+      store_titleized_input(input)
+    end
+
+    def store_titleized_input(input)
+      titleized_input = input.split.map do |word|
+        if word.include? "-"
+          word = word.split("-").map { |words| words.capitalize }.join("-")
+        else
+          word = word.capitalize
+        end
+      end.join(' ')
+
+      PREVIOUSLY_ENTERED[self.name] << titleized_input
       input
     end
 
@@ -72,6 +84,7 @@ module FindMovies
     def new_get_movie_selection
       puts "Enter a film #{self.name.downcase}"
       input = get_input
+      binding.pry
       return if input.nil?
       if SELECTION[:movie_list].empty?
         SELECTION[:movie_list] = self.find_by(name: input).movies
@@ -95,7 +108,7 @@ module FindMovies
     def movie_recommendations
       puts "Here are your recommendations for:".colorize(:yellow)
       output_previously_entered
-      puts SELECTION[:movie_list].map {|movie| movie.name.colorize(:green)}
+      puts (SELECTION[:movie_list].map {|movie| movie.name.colorize(:green)})
 
       Movie.ending_prompt
     end
