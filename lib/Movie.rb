@@ -23,7 +23,7 @@ class Movie < ActiveRecord::Base
     when "2", "genres"
       Genre.new_get_movie_selection
     when "3", "done"
-      self.movie_recommendations(selection[:movie_list])
+      movie_recommendations
     else
       puts "Input error! Try again."
       self.recommendation

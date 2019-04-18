@@ -13,18 +13,27 @@ module FindMovies
       prev_movie_list: []
     }
 
-
+    def not_an_option
+      puts "Sorry that #{self.name} is not an option."
+      puts 'Enter a different #{self.name} or enter "back"'
+      puts 'to return to change the search category'
+      get_input
+    end
 
     # Get and store input
     def get_input
       input = gets.strip.downcase
+      if input == "back"
+        Movie.recommendation
+        return
+      end
+      self.not_an_option if self.find_by(name: input).nil?
       PREVIOUSLY_ENTERED[self.name] << input
       input
     end
 
     # Print all inputs for this session
     def output_previously_entered
-      PREVIOUSLY_ENTERED[self.name].pop
       PREVIOUSLY_ENTERED.each do |key,value|
         puts "#{key}: #{value.join(", ")}".colorize(:yellow)
       end
@@ -41,14 +50,15 @@ module FindMovies
     end
 
     # Message for too many inputs
-    def too_many(prev_movie_list)
+    def too_many
       puts "You have entered too many #{self.name.downcase}s.".colorize(:red)
-      movie_recommendations(prev_movie_list)
+      PREVIOUSLY_ENTERED[self.name].pop unless PREVIOUSLY_ENTERED[self.name].empty?
+      movie_recommendations
     end
 
     #Helper for .get_movie_selection
-    def narrow_by_self(movie_list:, input:)
-      movie_list.select do |movie|
+    def narrow_by_self(input)
+      SELECTION[:movie_list].select do |movie|
         classes = {
           'Genre' => movie.genres,
           'Actor' => movie.actors
@@ -71,15 +81,18 @@ module FindMovies
     def new_get_movie_selection
       puts "Enter a film #{self.name.downcase}"
       input = get_input
+      return if input.nil?
       if SELECTION[:movie_list].empty?
         SELECTION[:movie_list] = self.find_by(name: input).movies
         output_entered
         Movie.recommendation
       else
         SELECTION[:prev_movie_list] = SELECTION[:movie_list]
-        SELECTION[:movie_list] = self.narrow_by_self(movie_list: SELECTION[:movie_list], input: input)
+        SELECTION[:movie_list] = self.narrow_by_self(input)
         if SELECTION[:movie_list].empty?
-          too_many(SELECTION[:prev_movie_list])
+
+          SELECTION[:movie_list] = SELECTION[:prev_movie_list]
+          too_many
         else
           output_entered
           Movie.recommendation
@@ -87,34 +100,11 @@ module FindMovies
       end
     end
 
-
-
-    # Narrow down suggestions
-    def get_movie_selection
-      movie_list = find_movies_by_input
-      puts "Enter another #{self.name.downcase}"
-      input = get_input
-      while input != "done"
-
-        prev_movie_list = movie_list
-        movie_list = self.narrow_by_self(movie_list: movie_list, input: input)
-
-        if movie_list.empty?
-          too_many(prev_movie_list)
-          return
-        end
-
-        puts "Enter another #{self.name.downcase}"
-        input = get_input
-      end
-      movie_recommendations(movie_list)
-    end
-
     # Output movie recommendations
-    def movie_recommendations(movie_list)
+    def movie_recommendations
       puts "Here are your recommendations for:".colorize(:yellow)
       output_previously_entered
-      puts movie_list.map {|movie| movie.name.colorize(:green)}
+      puts SELECTION[:movie_list].map {|movie| movie.name.colorize(:green)}
     end
 
 
