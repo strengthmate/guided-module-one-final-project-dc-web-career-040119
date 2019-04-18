@@ -105,6 +105,8 @@ module FindMovies
       puts "Here are your recommendations for:".colorize(:yellow)
       output_previously_entered
       puts SELECTION[:movie_list].map {|movie| movie.name.colorize(:green)}
+
+      Movie.ending_prompt
     end
 
 

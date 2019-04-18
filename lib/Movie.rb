@@ -15,15 +15,42 @@ class Movie < ActiveRecord::Base
     puts "1. Actors"
     puts "2. Genres"
     puts "3. Done"
+    puts "_" * 86
+    puts ""
 
-    selection = gets.strip.downcase
-    case selection
+
+    case gets.strip.downcase
     when "1", "actors"
       Actor.new_get_movie_selection
     when "2", "genres"
       Genre.new_get_movie_selection
     when "3", "done"
       movie_recommendations
+    else
+      puts "Input error! Try again."
+      self.recommendation
+    end
+  end
+
+  def self.reset
+    SELECTION.each { |k, v| v.clear }
+    PREVIOUSLY_ENTERED.each { |k, v| v.clear }
+  end
+
+  def self.ending_prompt
+    puts ""
+    puts "Would you like to get a new recommendation? "
+    puts ""
+    puts "1. Yes"
+    puts "2. No"
+    puts "_" * 86
+
+    case gets.strip.downcase
+    when "1" , "yes", 'y'
+      self.recommendation
+    when "2", "no", "n"
+      puts ""
+      puts "Enjoy the movie!".colorize(:light_magenta)
     else
       puts "Input error! Try again."
       self.recommendation
