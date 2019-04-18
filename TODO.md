@@ -6,7 +6,6 @@
 
 *spelling checker/closest match
 
-##Keyword search
 ##date range
 
 * connect to API
@@ -16,3 +15,11 @@
 * option for exact match or closest match
 * give links for watching each movie
 gi
+
+
+##4/18 after lunch - To Do
+
+* Add Director search option
+* Pull additional movie data from API
+* Get movie info form result list
+* option to go back and see info for other movies
