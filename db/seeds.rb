@@ -35,25 +35,37 @@ movie_list.each do |movie|
   end
 end
 
-  movie_list.each_with_index  do |movie,index|
-    if index % 40 == 0
-      sleep(11)
-    end
-
-    Tmdb::Movie.cast(movie.id).each do |cast_member|
-      Actor.find_or_create_by(
-        api_id: cast_member.id,
-        name: cast_member.name.downcase,
-        )
-      CastMember.find_or_create_by(
-                  movie_api_id: movie.id,
-                  movie_id: Movie.find_by(api_id: movie.id).id,
-                  actor_api_id: cast_member.id,
-                  actor_id: Actor.find_by(api_id: cast_member.id).id,
-                  character_name: cast_member.character
-      )
-    end
+movie_list.each_with_index  do |movie,index|
+  if index % 40 == 0
+    sleep(11)
   end
+
+  # Tmdb::Movie.cast(movie.id).each do |cast_member|
+  #   Actor.find_or_create_by(
+  #     api_id: cast_member.id,
+  #     name: cast_member.name.downcase,
+  #     )
+  #   CastMember.find_or_create_by(
+  #     movie_api_id: movie.id,
+  #     movie_id: Movie.find_by(api_id: movie.id).id,
+  #     actor_api_id: cast_member.id,
+  #     actor_id: Actor.find_by(api_id: cast_member.id).id,
+  #     character_name: cast_member.character
+  #   )
+  # end
+  Tmdb::Movie.director(movie.id).each do |director|
+    Director.find_or_create_by(
+      api_id: director.id,
+      name: director.name.downcase,
+      )
+    MovieDirector.find_or_create_by(
+      movie_api_id: movie.id,
+      movie_id: Movie.find_by(api_id: movie.id).id,
+      director_api_id: director.id,
+      director_id: Director.find_by(api_id: director.id).id,
+    )
+  end
+end
 
 
 
