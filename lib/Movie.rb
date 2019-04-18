@@ -93,8 +93,8 @@ class Movie < ActiveRecord::Base
   end
 
   def self.reset
-    SELECTION.each { |k, v| v = [] }
-    PREVIOUSLY_ENTERED.each { |k, v| v = [] }
+    SELECTION[:movie_list] = []
+    PREVIOUSLY_ENTERED.each { |k, v| v.clear }
   end
 
   def self.ending_prompt
