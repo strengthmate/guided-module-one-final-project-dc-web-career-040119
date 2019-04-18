@@ -5,9 +5,9 @@ module FindMovies
 
 
     def not_an_option
-      puts "Sorry that #{self.name} is not an option."
-      puts 'Enter a different #{self.name} or enter "back"'
-      puts 'to return to change the search category'
+      puts "Sorry that #{self.name.downcase} is not an option.".colorize(:red)
+      puts "Enter a different #{self.name.downcase} or enter".colorize(:red)
+      puts '"back" to return to change the search category'.colorize(:red)
       get_input
     end
 
@@ -18,7 +18,7 @@ module FindMovies
         Movie.recommendation
         return
       end
-      self.not_an_option if self.find_by(name: input).nil?
+      return self.not_an_option if self.find_by(name: input).nil?
       PREVIOUSLY_ENTERED[self.name] << input
       input
     end

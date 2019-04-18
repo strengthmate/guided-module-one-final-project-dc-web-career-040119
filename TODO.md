@@ -4,8 +4,10 @@
 * make pretty - optimize UI
 * bug fixes and control input. 
 
+*spelling checker/closest match
 
-
+##Keyword search
+##date range
 
 * connect to API
 * Write logic for returning intuitive reccommendations

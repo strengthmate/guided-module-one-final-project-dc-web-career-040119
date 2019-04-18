@@ -75,7 +75,7 @@ class Movie < ActiveRecord::Base
     puts "1. Actors"
     puts "2. Genres"
     puts "3. Done"
-    puts "_" * 86
+    puts "_" * 60
     puts ""
 
 
