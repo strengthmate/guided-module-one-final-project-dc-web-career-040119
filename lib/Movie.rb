@@ -11,10 +11,18 @@ class Movie < ActiveRecord::Base
 
   def self.find_movie_by_keyword
     puts "Enter a keyword"
-    keyword = gets.strip
-    PREVIOUSLY_ENTERED["Keyword"] << keyword
-    keyword.downcase!
+    input = gets.strip
+    keyword = input.downcase
     movies_with_keyword = Movie.where("description LIKE ?", "%#{keyword}%")
+
+    if movies_with_keyword.empty? || keyword.empty?
+      puts "Sorry, that keyword didn't return any matches"
+      puts 'or type "back" to try a different criteria'
+      find_movie_by_keyword
+      return
+    end
+
+    PREVIOUSLY_ENTERED["Keyword"] << input
 
     if SELECTION[:movie_list].empty?
       SELECTION[:movie_list] = movies_with_keyword
