@@ -90,7 +90,8 @@ def movie_info(movie)
   puts "Website: #{Tmdb::Movie.detail(movie.api_id).homepage}"
   puts ""
   puts "Genres: ".colorize(:yellow)
-  Tmdb::Movie.detail(movie.api_id).genres.each { |genre| print "#{genre.name} ,"}
+  Tmdb::Movie.detail(movie.api_id).genres.each { |genre| print "#{genre.name}, "}
+  puts ""
   puts ""
   puts "Description:".colorize(:yellow)
   puts movie.description
@@ -98,7 +99,9 @@ def movie_info(movie)
   puts "Directed by:".colorize(:yellow)
   Tmdb::Movie.director(movie.api_id).each { |director| print "#{director.name.colorize(:green)}, " } # todo: remove final comma
   puts ""
-  puts "Released: #{Tmdb::Movie.detail(movie.api_id).release_date[0..3]}"
+  puts ""
+  puts "Released: ".colorize(:yellow)
+  puts Tmdb::Movie.detail(movie.api_id).release_date[0..3]
   puts ""
   puts "Cast:".colorize(:yellow)
   Tmdb::Movie.cast(movie.api_id).each { |actor| print "#{actor.name.colorize(:green)} as #{actor.character}, " }
