@@ -32,16 +32,26 @@ def recommendation
   when "3", "keywords"
     Movie.find_movie_by_keyword
   when "4", "done"
-    Movie.movie_recommendations
+    movie_recommendations
   else
     puts "Input error! Try again."
     recommendation
   end
 end
 
-def reset
-  SELECTION[:movie_list] = []
-  PREVIOUSLY_ENTERED.each { |k, v| v.clear }
+# Print all inputs for this session
+def output_previously_entered
+  PREVIOUSLY_ENTERED.each do |key,value|
+    puts "#{key}: #{value.join(", ")}".colorize(:yellow)
+  end
+end
+
+# Output movie recommendations
+def movie_recommendations
+  puts "Here are your recommendations for:".colorize(:yellow)
+  output_previously_entered
+  puts (SELECTION[:movie_list].map {|movie| movie.name.colorize(:green)})
+  ending_prompt
 end
 
 def ending_prompt
@@ -63,6 +73,11 @@ def ending_prompt
     puts "Input error! Try again."
     ending_prompt
   end
+end
+
+def reset
+  SELECTION[:movie_list] = []
+  PREVIOUSLY_ENTERED.each { |k, v| v.clear }
 end
 
 puts "Welcome!"

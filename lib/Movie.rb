@@ -28,13 +28,19 @@ class Movie < ActiveRecord::Base
       if SELECTION[:movie_list].empty?
 
         SELECTION[:movie_list] = SELECTION[:prev_movie_list]
-        too_many
+        too_many_keywords
       else
         output_entered
         recommendation
       end
     end
 
+  end
+
+  def self.too_many_keywords
+    puts "You have entered too many keywords.".colorize(:red)
+    PREVIOUSLY_ENTERED['Keyword'].pop unless PREVIOUSLY_ENTERED['Keyword'].empty?
+    movie_recommendations
   end
 
 end
