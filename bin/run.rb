@@ -9,7 +9,9 @@ Tmdb::Api.key("9a306747f13ec661784ee120bacdd6fc")
 PREVIOUSLY_ENTERED = {
   'Genre' => [],
   'Actor' => [],
+  'Director' => [],
   'Keyword' => []
+
 }.freeze
 
 SELECTION = {
@@ -20,22 +22,25 @@ SELECTION = {
 def recommendation
   puts "What category would you like to search by?"
   puts ""
-  puts "1. Actors"
-  puts "2. Genres"
-  puts "3. Keywords"
-  puts "4. Done"
+  puts "1. Genre"
+  puts "2. Actor"
+  puts "3. Director"
+  puts "4. Keyword"
+  puts "5. Done"
   puts "_" * 60
   puts ""
 
 
   case gets.strip.downcase
-  when "1", "actors"
-    Actor.new_get_movie_selection
-  when "2", "genres"
+  when "1", "genre"
     Genre.new_get_movie_selection
-  when "3", "keywords"
+  when "2", "actor"
+    Actor.new_get_movie_selection
+  when "3", "director"
+    Director.new_get_movie_selection
+  when "4", "keyword"
     Movie.find_movie_by_keyword
-  when "4", "done"
+  when "5", "done"
     movie_recommendations
   else
     puts "Input error! Try again."

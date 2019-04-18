@@ -82,7 +82,8 @@ module FindMovies
       SELECTION[:movie_list].select do |movie|
         classes = {
           'Genre' => movie.genres,
-          'Actor' => movie.actors
+          'Actor' => movie.actors,
+          'Director' => movie.directors
         }
         classes[self.name].include?(self.find_by(name: input))
       end

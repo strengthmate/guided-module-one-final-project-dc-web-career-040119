@@ -8,6 +8,8 @@ class Movie < ActiveRecord::Base
   has_many :genres, through: :movie_genres
   has_many :cast_members
   has_many :actors, through: :cast_members
+  has_many :movie_directors
+  has_many :directors, through: :movie_directors
 
   def self.find_movie_by_keyword
     puts "Enter a keyword"
