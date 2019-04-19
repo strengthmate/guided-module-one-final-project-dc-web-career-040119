@@ -28,8 +28,8 @@ module FindMovies
 
     def not_an_option
       puts "Sorry that #{self.name.downcase} is not an option.".colorize(:red)
-      puts "Enter a different #{self.name.downcase} or enter".colorize(:red)
-      puts '"back" to return to change the search category'.colorize(:red)
+      puts "Enter a different #{self.name.downcase} or type".colorize(:red)
+      puts '"back" to change the search category'.colorize(:red)
       get_input
     end
 

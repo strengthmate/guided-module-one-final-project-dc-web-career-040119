@@ -90,41 +90,45 @@ def ask_for_movie_info
 end
 
 def movie_info(movie)
-  puts "Here is some information about #{movie.name}"
   puts ""
-  puts "Website: #{Tmdb::Movie.detail(movie.api_id).homepage}"
+  puts "Here is some information about #{movie.name}".colorize(:cyan)
+  puts ""
+  puts "Website: ".colorize(:yellow)
+  puts Tmdb::Movie.detail(movie.api_id).homepage unless Tmdb::Movie.detail(movie.api_id).homepage.nil?
   puts ""
   puts "Genres: ".colorize(:yellow)
-  Tmdb::Movie.detail(movie.api_id).genres.each { |genre| print "#{genre.name}, "}
-  puts ""
+  puts Tmdb::Movie.detail(movie.api_id).genres.map { |genre| genre.name}.join(", ")
   puts ""
   puts "Description:".colorize(:yellow)
   puts movie.description
   puts ""
   puts "Directed by:".colorize(:yellow)
-  Tmdb::Movie.director(movie.api_id).each { |director| print "#{director.name.colorize(:green)}, " } # todo: remove final comma
-  puts ""
+  puts Tmdb::Movie.director(movie.api_id).map { |director| director.name }.join(", ")# todo: remove final comma
   puts ""
   puts "Released: ".colorize(:yellow)
   puts Tmdb::Movie.detail(movie.api_id).release_date[0..3]
   puts ""
   puts "Cast:".colorize(:yellow)
-  Tmdb::Movie.cast(movie.api_id).each { |actor| print "#{actor.name.colorize(:green)} as #{actor.character}, " }
+  Tmdb::Movie.cast(movie.api_id).each_with_index do |actor, i|
+    print "#{actor.name.colorize(:green)} as #{actor.character}, "
+    puts "" if (i + 1)  % 4 == 0
+  end
   puts ""
-  puts
-  puts "Reviews:"
-  Tmdb::Movie.reviews(movie.api_id).results[0..2].each_with_index {|r, i| puts "Review #{i+1}.".colorize(:yellow) + "#{r.content}\n***\n" }
   puts ""
-  puts 'Type "done" to return to your results'
+  puts "Reviews:".colorize(:yellow)
+  Tmdb::Movie.reviews(movie.api_id).results[0..2].each_with_index {|r, i| puts "Review #{i+1}. \n".colorize(:green) + "#{r.content}\n***\n" }
+  puts ""
+
   back_out_movie_info
 end
 
 def back_out_movie_info
+  puts 'Type "done" to return to your results'
   input = gets.strip.downcase
   if input == 'done'
     movie_recommendations
   else
-    puts 'Input not recognized: Type "done" to return to your results'
+    puts 'Input not recognized!'
     back_out_movie_info
   end
 end
@@ -152,7 +156,7 @@ end
 
 def reset
   SELECTION[:movie_list] = []
-  PREVIOUSLY_ENTERED.each { |k, v| v.clear }
+  PREVIOUSLY_ENTERED.each { |_, category| category.clear }
 end
 
 puts "Welcome!"
