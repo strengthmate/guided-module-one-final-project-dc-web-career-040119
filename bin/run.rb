@@ -19,19 +19,29 @@ SELECTION = {
   prev_movie_list: []
 }
 
+def welcome
+  50.times {puts ""}
+  puts "Welcome to".colorize(:light_magenta)
+  a = Artii::Base.new :font => 'slant'
+  puts a.asciify('MoviRecs').colorize(:light_magenta)
+  puts 'Press "Enter" to begin'.colorize(:light_magenta)
+  gets
+  40.times {puts ""}
+  recommendation
+end
+
 def recommendation
-  puts "By what category would you like to search?"
+  puts "By what category would you like to search?".colorize(:light_magenta)
   puts ""
-  puts "1. Genre"
-  puts "2. Actor"
-  puts "3. Director"
-  puts "4. Keyword"
-  puts "5. Done"
-  puts "_" * 60
-  puts ""
+  puts "1. Genre".colorize(:yellow)
+  puts "2. Actor".colorize(:yellow)
+  puts "3. Director".colorize(:yellow)
+  puts "4. Keyword".colorize(:yellow)
+  puts "5. Done".colorize(:yellow)
 
-
-  case gets.strip.downcase
+  input = gets.strip.downcase
+  50.times {puts ""}
+  case input
   when "1", "genre"
     Genre.new_get_movie_selection
   when "2", "actor"
@@ -46,26 +56,16 @@ def recommendation
     puts "Input error! Try again."
     recommendation
   end
+
 end
 
 def output_entered
-  # puts "#" * 80
-  # puts ""
-  # puts "So far, you have entered".colorize(:red)
-  # # PREVIOUSLY_ENTERED[self.name]
   PREVIOUSLY_ENTERED.each do |key,value|
     puts "#{key}: #{value.join(", ")}".colorize(:yellow) unless value.empty?
   end
   puts ""
 end
 
-# Print all inputs for this session
-# def output_previously_entered
-#   PREVIOUSLY_ENTERED.each do |key,value|
-#     puts "#{key}: #{value.join(", ")}".colorize(:yellow) unless value.empty?
-#   end
-#   puts ''
-# end
 
 # Output movie recommendations
 def movie_recommendations
@@ -85,6 +85,7 @@ def ask_for_movie_info
   puts ""
 
   input = gets.strip.downcase
+  50.times {puts ""}
   if input == 'done'
     ending_prompt
   elsif input == 'back'
@@ -140,6 +141,7 @@ end
 def back_out_movie_info
   puts 'Type "done" to return to your results'
   input = gets.strip.downcase
+  50.times {puts ""}
   if input == 'done'
     movie_recommendations
   else
@@ -174,8 +176,4 @@ def reset
   PREVIOUSLY_ENTERED.each { |_, category| category.clear }
 end
 
-puts "Welcome to"
-a = Artii::Base.new :font => 'slant'
-puts a.asciify('MoviRecs').colorize(:light_magenta)
-recommendation
-
+welcome

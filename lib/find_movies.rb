@@ -3,14 +3,14 @@ module FindMovies
   module ClassMethods
 
     def new_get_movie_selection
-      puts "Enter a film #{self.name.downcase}"
+      puts "Enter a film #{self.name.downcase}".colorize(:light_magenta)
       input = get_input
       PREVIOUSLY_ENTERED[self.name] << self.where("lower(name) = ?", input)[0].name
       return if input.nil?
       if SELECTION[:movie_list].empty?
         SELECTION[:movie_list] = self.where("lower(name) = ?", input)[0].movies
         puts ""
-        puts "So far, you have entered".colorize(:red)
+        puts "So far, you have entered:\n".colorize(:light_magenta)
         output_entered
         recommendation
       else
@@ -40,6 +40,7 @@ module FindMovies
     # Get and store input
     def get_input
       input = gets.strip.downcase
+      50.times {puts ""}
       if input == "back"
         recommendation
         return

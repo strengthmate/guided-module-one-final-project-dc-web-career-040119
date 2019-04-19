@@ -14,6 +14,7 @@ class Movie < ActiveRecord::Base
   def self.find_movie_by_keyword
     puts "Enter a keyword"
     input = gets.strip
+    50.times {puts ""}
     keyword = input.downcase
     movies_with_keyword = Movie.where("description LIKE ?", "%#{keyword}%")
 
