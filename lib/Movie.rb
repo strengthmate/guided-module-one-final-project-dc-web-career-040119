@@ -22,8 +22,10 @@ class Movie < ActiveRecord::Base
       puts 'or type "back" to try a different criteria'
       find_movie_by_keyword
       return
+    elsif keyword == 'back'
+      recommendation
+      return
     end
-
     PREVIOUSLY_ENTERED["Keyword"] << input
 
     if SELECTION[:movie_list].empty?

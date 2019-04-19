@@ -20,7 +20,7 @@ SELECTION = {
 }
 
 def recommendation
-  puts "What category would you like to search by?"
+  puts "By what category would you like to search?"
   puts ""
   puts "1. Genre"
   puts "2. Actor"
@@ -68,12 +68,15 @@ def ask_for_movie_info
   #show description rating reviews date cast trailer link
   puts ""
   puts "Select a movie that you would like to learn more about,"
+  puts 'type "back" to try a different search criteria,'
   puts 'or type "done" to get more recommendations.'
   puts ""
 
   input = gets.strip.downcase
   if input == 'done'
     ending_prompt
+  elsif input == 'back'
+    recommendation
   else
     movie_selection = SELECTION[:movie_list].each_with_index.find do |movie, i|
       input == movie.name.downcase || input.to_i == i + 1
@@ -111,7 +114,7 @@ def movie_info(movie)
   puts "Cast:".colorize(:yellow)
   Tmdb::Movie.cast(movie.api_id).each_with_index do |actor, i|
     print "#{actor.name.colorize(:green)} as #{actor.character}, "
-    puts "" if (i + 1)  % 4 == 0
+    puts "" if (i + 1)  % 3 == 0
   end
   puts ""
   puts ""
@@ -159,6 +162,8 @@ def reset
   PREVIOUSLY_ENTERED.each { |_, category| category.clear }
 end
 
-puts "Welcome!"
+puts "Welcome to".colorize
+a = Artii::Base.new :font => 'slant'
+puts a.asciify('MoviRecs').colorize(:light_magenta)
 recommendation
 
