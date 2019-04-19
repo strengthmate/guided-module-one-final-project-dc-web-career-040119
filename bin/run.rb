@@ -11,14 +11,15 @@ PREVIOUSLY_ENTERED = {
   'Actor' => [],
   'Director' => [],
   'Keyword' => []
-
 }.freeze
 
+#stores results from current selected criteria and results from previously entered criteria
 SELECTION = {
   movie_list: [],
   prev_movie_list: []
-}
+}.freeze
 
+#Initial display #when starting the program
 def welcome
   90.times {puts ""}
   puts "Welcome to".colorize(:light_magenta)
@@ -30,6 +31,7 @@ def welcome
   recommendation
 end
 
+#prompts user to choose a search category and directs to the method for the search category
 def recommendation
   puts "By what category would you like to search?".colorize(:light_magenta)
   puts ""
@@ -56,16 +58,15 @@ def recommendation
     puts "Input error! Try again.".colorize(:red)
     recommendation
   end
-
 end
 
+#prints previously entered search criteria #while user determines the next selection
 def output_entered
   PREVIOUSLY_ENTERED.each do |key,value|
     puts "#{key}: #{value.join(", ")}".colorize(:yellow) unless value.empty?
   end
   puts ""
 end
-
 
 # Output movie recommendations
 def movie_recommendations
@@ -74,9 +75,9 @@ def movie_recommendations
   output_entered
   puts (SELECTION[:movie_list].each_with_index.map { |movie, i| "#{i + 1}. #{movie.name}".colorize(:green)})
   ask_for_movie_info
-  # ending_prompt
 end
 
+#Allows user to select a movie from the results
 def ask_for_movie_info
   #show description rating reviews date cast trailer link
   puts ""
@@ -87,6 +88,7 @@ def ask_for_movie_info
 
   input = gets.strip.downcase
   90.times {puts ""}
+
   if input == 'done'
     ending_prompt
   elsif input == 'back'
@@ -101,9 +103,9 @@ def ask_for_movie_info
     movie_recommendations
     ask_for_movie_info
   end
-
 end
 
+#displays info about the selected movie
 def movie_info(movie)
   puts ""
   puts "Here is some information about #{movie.name}".colorize(:light_magenta)
@@ -128,6 +130,7 @@ def movie_info(movie)
     print "#{actor.name.colorize(:green)} as #{actor.character}, "
     puts "" if (i + 1)  % 3 == 0
   end
+
   puts ""
   puts ""
   puts "Reviews:".colorize(:yellow)
@@ -137,6 +140,7 @@ def movie_info(movie)
   back_out_movie_info
 end
 
+#Enables user to press "Enter" to return to movie results #while movie info is on screen
 def back_out_movie_info
   puts 'Press "Enter" to return to your results'.colorize(:light_magenta)
   gets
@@ -144,6 +148,7 @@ def back_out_movie_info
   movie_recommendations
 end
 
+#Displays #when user types 'done'. Allows user to either get a new recommendation or end the program
 def ending_prompt
   puts ""
   puts "Would you like to get a new recommendation? ".colorize(:light_magenta)
@@ -153,6 +158,7 @@ def ending_prompt
 
   input = gets.strip.downcase
   90.times {puts ""}
+
   case input
   when "1" , "yes", 'y'
     reset
@@ -166,9 +172,11 @@ def ending_prompt
   end
 end
 
+#Initializes selection and previously entered constants #when user tries to do a new search
 def reset
   SELECTION[:movie_list] = []
   PREVIOUSLY_ENTERED.each { |_, category| category.clear }
 end
 
+#start the program
 welcome

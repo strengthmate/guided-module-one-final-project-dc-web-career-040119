@@ -11,6 +11,10 @@ class Movie < ActiveRecord::Base
   has_many :movie_directors
   has_many :directors, through: :movie_directors
 
+  # Prompts user to search for movies keywords
+  # searches database and sets input as a variable
+  # selects movies in which the keyword exists in the description
+  # Adds search term to the PREVOUSLY_ENTERED array
   def self.find_movie_by_keyword
     puts "Enter a keyword".colorize(:light_magenta)
     puts 'or type "back" to try a different criteria'.colorize(:light_magenta)
@@ -29,6 +33,7 @@ class Movie < ActiveRecord::Base
       recommendation
       return
     end
+
     PREVIOUSLY_ENTERED["Keyword"] << input unless PREVIOUSLY_ENTERED["Keyword"].include?(input)
 
     if SELECTION[:movie_list].empty?
@@ -40,8 +45,8 @@ class Movie < ActiveRecord::Base
       SELECTION[:movie_list] = SELECTION[:movie_list].select do |movie|
         movie.description.include?(keyword)
       end
-      if SELECTION[:movie_list].empty?
 
+      if SELECTION[:movie_list].empty?
         SELECTION[:movie_list] = SELECTION[:prev_movie_list]
         too_many_keywords
       else
@@ -49,13 +54,12 @@ class Movie < ActiveRecord::Base
         recommendation
       end
     end
-
   end
 
+  # removes keyword that user has entered #if there are no movie descriptions that have the combination of keywords entered by the user
   def self.too_many_keywords
     puts "You have entered too many keywords.".colorize(:red)
     PREVIOUSLY_ENTERED['Keyword'].pop unless PREVIOUSLY_ENTERED['Keyword'].empty?
     movie_recommendations
   end
-
 end
