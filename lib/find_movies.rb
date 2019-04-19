@@ -32,8 +32,8 @@ module FindMovies
 
     def not_an_option
       puts "Sorry that #{self.name.downcase} is not an option.".colorize(:red)
-      puts "Enter a different #{self.name.downcase} or type".colorize(:red)
-      puts '"back" to change the search category'.colorize(:red)
+      puts "Enter a different #{self.name.downcase} or type".colorize(:light_magenta)
+      puts '"back" to change the search category'.colorize(:light_magenta)
       get_input
     end
 
@@ -53,7 +53,10 @@ module FindMovies
 
     # Message for too many inputs
     def too_many
-      puts "You have entered too many #{self.name.downcase}s.".colorize(:red)
+      puts "Sorry, that #{self.name.downcase} didn't return any matches".colorize(:red)
+      puts "Please enter another #{self.name.downcase}".colorize(:light_magenta)
+      puts 'or type "back" to try a different criteria'.colorize(:light_magenta)
+      puts ''
       PREVIOUSLY_ENTERED[self.name].pop unless PREVIOUSLY_ENTERED[self.name].empty?
       movie_recommendations
     end

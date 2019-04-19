@@ -20,6 +20,7 @@ class Movie < ActiveRecord::Base
 
     if movies_with_keyword.empty? || keyword.empty?
       puts "Sorry, that keyword didn't return any matches"
+      puts "Please enter another keyword"
       puts 'or type "back" to try a different criteria'
       find_movie_by_keyword
       return

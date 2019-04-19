@@ -53,7 +53,7 @@ def recommendation
   when "5", "done"
     movie_recommendations
   else
-    puts "Input error! Try again."
+    puts "Input error! Try again.".colorize(:red)
     recommendation
   end
 
@@ -79,9 +79,9 @@ end
 def ask_for_movie_info
   #show description rating reviews date cast trailer link
   puts ""
-  puts "Select a movie that you would like to learn more about,"
-  puts 'type "back" to try a different search criteria,'
-  puts 'or type "done" to get more recommendations.'
+  puts "Select a movie that you would like to learn more about,".colorize(:light_magenta)
+  puts 'type "back" to try a different search criteria,'.colorize(:light_magenta)
+  puts 'or type "done" to get more recommendations.'.colorize(:light_magenta)
   puts ""
 
   input = gets.strip.downcase
@@ -95,7 +95,8 @@ def ask_for_movie_info
       input == movie.name.downcase || input.to_i == i + 1
     end
     if movie_selection.empty?
-      puts "Sorry, that input was not recognized"
+      # todo fix this error. not throwung error message
+      puts "Sorry, that input was not recognized".colorize(:red)
       ask_for_movie_info
       return
     else
@@ -139,26 +140,27 @@ def movie_info(movie)
 end
 
 def back_out_movie_info
-  puts 'Type "done" to return to your results'
+  puts 'Type "done" to return to your results'.colorize(:light_magenta)
   input = gets.strip.downcase
   50.times {puts ""}
   if input == 'done'
     movie_recommendations
   else
-    puts 'Input not recognized!'
+    puts 'Input not recognized!'.colorize(:red)
     back_out_movie_info
   end
 end
 
 def ending_prompt
   puts ""
-  puts "Would you like to get a new recommendation? "
+  puts "Would you like to get a new recommendation? ".colorize(:light_magenta)
   puts ""
-  puts "1. Yes"
-  puts "2. No"
-  puts "_" * 60
+  puts "1. Yes".colorize(:yellow)
+  puts "2. No".colorize(:yellow)
 
-  case gets.strip.downcase
+  input = gets.strip.downcase
+  50.times {puts ""}
+  case input
   when "1" , "yes", 'y'
     reset
     recommendation
