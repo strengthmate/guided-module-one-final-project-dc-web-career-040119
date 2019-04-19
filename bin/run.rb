@@ -17,7 +17,7 @@ PREVIOUSLY_ENTERED = {
 SELECTION = {
   movie_list: [],
   prev_movie_list: []
-}.freeze
+}
 
 #Initial display #when starting the program
 def welcome
