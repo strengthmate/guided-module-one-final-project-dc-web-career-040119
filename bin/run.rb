@@ -20,13 +20,13 @@ SELECTION = {
 }
 
 def welcome
-  50.times {puts ""}
+  90.times {puts ""}
   puts "Welcome to".colorize(:light_magenta)
   a = Artii::Base.new :font => 'slant'
   puts a.asciify('MoviRecs').colorize(:light_magenta)
   puts 'Press "Enter" to begin'.colorize(:light_magenta)
   gets
-  40.times {puts ""}
+  90.times {puts ""}
   recommendation
 end
 
@@ -40,7 +40,7 @@ def recommendation
   puts "5. Done".colorize(:yellow)
 
   input = gets.strip.downcase
-  50.times {puts ""}
+  90.times {puts ""}
   case input
   when "1", "genre"
     Genre.new_get_movie_selection
@@ -69,7 +69,8 @@ end
 
 # Output movie recommendations
 def movie_recommendations
-  puts "Here are your results for:".colorize(:yellow)
+  puts "Here are your results for:".colorize(:light_magenta)
+  puts ""
   output_entered
   puts (SELECTION[:movie_list].each_with_index.map { |movie, i| "#{i + 1}. #{movie.name}".colorize(:green)})
   ask_for_movie_info
@@ -85,30 +86,27 @@ def ask_for_movie_info
   puts ""
 
   input = gets.strip.downcase
-  50.times {puts ""}
+  90.times {puts ""}
   if input == 'done'
     ending_prompt
   elsif input == 'back'
     recommendation
-  else
+  elsif SELECTION[:movie_list].include?(input) || input.to_i.between?(1, SELECTION[:movie_list].length)
     movie_selection = SELECTION[:movie_list].each_with_index.find do |movie, i|
       input == movie.name.downcase || input.to_i == i + 1
     end
-    if movie_selection.empty?
-      # todo fix this error. not throwung error message
-      puts "Sorry, that input was not recognized".colorize(:red)
-      ask_for_movie_info
-      return
-    else
-      movie_info(movie_selection[0])
-    end
+    movie_info(movie_selection[0])
+  else
+    puts "Sorry, that input was not recognized".colorize(:red)
+    movie_recommendations
+    ask_for_movie_info
   end
 
 end
 
 def movie_info(movie)
   puts ""
-  puts "Here is some information about #{movie.name}".colorize(:cyan)
+  puts "Here is some information about #{movie.name}".colorize(:light_magenta)
   puts ""
   puts "Website: ".colorize(:yellow)
   puts Tmdb::Movie.detail(movie.api_id).homepage unless Tmdb::Movie.detail(movie.api_id).homepage.nil?
@@ -140,15 +138,10 @@ def movie_info(movie)
 end
 
 def back_out_movie_info
-  puts 'Type "done" to return to your results'.colorize(:light_magenta)
-  input = gets.strip.downcase
-  50.times {puts ""}
-  if input == 'done'
-    movie_recommendations
-  else
-    puts 'Input not recognized!'.colorize(:red)
-    back_out_movie_info
-  end
+  puts 'Press "Enter" to return to your results'.colorize(:light_magenta)
+  gets
+  90.times {puts ""}
+  movie_recommendations
 end
 
 def ending_prompt
@@ -159,7 +152,7 @@ def ending_prompt
   puts "2. No".colorize(:yellow)
 
   input = gets.strip.downcase
-  50.times {puts ""}
+  90.times {puts ""}
   case input
   when "1" , "yes", 'y'
     reset

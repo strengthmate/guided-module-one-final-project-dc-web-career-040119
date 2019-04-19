@@ -12,23 +12,23 @@ class Movie < ActiveRecord::Base
   has_many :directors, through: :movie_directors
 
   def self.find_movie_by_keyword
-    puts "Enter a keyword"
+    puts "Enter a keyword".colorize(:light_magentaa)
     input = gets.strip
-    50.times {puts ""}
+    90.times {puts ""}
     keyword = input.downcase
     movies_with_keyword = Movie.where("description LIKE ?", "%#{keyword}%")
 
     if movies_with_keyword.empty? || keyword.empty?
-      puts "Sorry, that keyword didn't return any matches"
-      puts "Please enter another keyword"
-      puts 'or type "back" to try a different criteria'
+      puts "Sorry, that keyword didn't return any matches".colorize(:red)
+      puts "Please enter another keyword".colorize(:light_magenta)
+      puts 'or type "back" to try a different criteria'.colorize(:light_magenta)
       find_movie_by_keyword
       return
     elsif keyword == 'back'
       recommendation
       return
     end
-    PREVIOUSLY_ENTERED["Keyword"] << input
+    PREVIOUSLY_ENTERED["Keyword"] << input unless PREVIOUSLY_ENTERED["Keyword"].include?(input)
 
     if SELECTION[:movie_list].empty?
       SELECTION[:movie_list] = movies_with_keyword
