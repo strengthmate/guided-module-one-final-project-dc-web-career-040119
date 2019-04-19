@@ -4,6 +4,7 @@ module FindMovies
 
     def new_get_movie_selection
       puts "Enter a film #{self.name.downcase}".colorize(:light_magenta)
+      puts 'or type "back" to try a different criteria'.colorize(:light_magenta)
       input = get_input
       chosen = self.where("lower(name) = ?", input)[0]
       unless PREVIOUSLY_ENTERED[self.name].include?(chosen.name)

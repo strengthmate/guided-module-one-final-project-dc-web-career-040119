@@ -12,7 +12,8 @@ class Movie < ActiveRecord::Base
   has_many :directors, through: :movie_directors
 
   def self.find_movie_by_keyword
-    puts "Enter a keyword".colorize(:light_magentaa)
+    puts "Enter a keyword".colorize(:light_magenta)
+    puts 'or type "back" to try a different criteria'.colorize(:light_magenta)
     input = gets.strip
     90.times {puts ""}
     keyword = input.downcase
