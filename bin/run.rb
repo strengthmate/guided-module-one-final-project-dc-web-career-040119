@@ -48,17 +48,29 @@ def recommendation
   end
 end
 
-# Print all inputs for this session
-def output_previously_entered
+def output_entered
+  # puts "#" * 80
+  # puts ""
+  # puts "So far, you have entered".colorize(:red)
+  # # PREVIOUSLY_ENTERED[self.name]
   PREVIOUSLY_ENTERED.each do |key,value|
-    puts "#{key}: #{value.join(", ")}".colorize(:yellow)
+    puts "#{key}: #{value.join(", ")}".colorize(:yellow) unless value.empty?
   end
+  puts ""
 end
+
+# Print all inputs for this session
+# def output_previously_entered
+#   PREVIOUSLY_ENTERED.each do |key,value|
+#     puts "#{key}: #{value.join(", ")}".colorize(:yellow) unless value.empty?
+#   end
+#   puts ''
+# end
 
 # Output movie recommendations
 def movie_recommendations
   puts "Here are your results for:".colorize(:yellow)
-  output_previously_entered
+  output_entered
   puts (SELECTION[:movie_list].each_with_index.map { |movie, i| "#{i + 1}. #{movie.name}".colorize(:green)})
   ask_for_movie_info
   # ending_prompt
@@ -162,7 +174,7 @@ def reset
   PREVIOUSLY_ENTERED.each { |_, category| category.clear }
 end
 
-puts "Welcome to".colorize
+puts "Welcome to"
 a = Artii::Base.new :font => 'slant'
 puts a.asciify('MoviRecs').colorize(:light_magenta)
 recommendation

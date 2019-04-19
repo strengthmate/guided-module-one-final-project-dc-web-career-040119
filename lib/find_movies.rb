@@ -5,10 +5,12 @@ module FindMovies
     def new_get_movie_selection
       puts "Enter a film #{self.name.downcase}"
       input = get_input
-
+      PREVIOUSLY_ENTERED[self.name] << self.where("lower(name) = ?", input)[0].name
       return if input.nil?
       if SELECTION[:movie_list].empty?
-        SELECTION[:movie_list] = self.find_by(name: input).movies
+        SELECTION[:movie_list] = self.where("lower(name) = ?", input)[0].movies
+        puts ""
+        puts "So far, you have entered".colorize(:red)
         output_entered
         recommendation
       else
@@ -19,6 +21,8 @@ module FindMovies
           SELECTION[:movie_list] = SELECTION[:prev_movie_list]
           too_many
         else
+          puts ""
+          puts "So far, you have entered".colorize(:red)
           output_entered
           recommendation
         end
@@ -40,34 +44,11 @@ module FindMovies
         recommendation
         return
       end
-      return self.not_an_option if self.find_by(name: input).nil?
-      store_titleized_input(input)
-    end
-
-    def store_titleized_input(input)
-      titleized_input = input.split.map do |word|
-        if word.include? "-"
-          word.split("-").map { |words| words.capitalize }.join("-")
-        else
-          word.capitalize
-        end
-      end.join(' ')
-
-      PREVIOUSLY_ENTERED[self.name] << titleized_input
+      return self.not_an_option if self.where("lower(name) = ?", input)[0].nil?
       input
     end
 
 
-
-    def output_entered
-      puts "#" * 80
-      puts ""
-      puts "So far, you have entered".colorize(:red)
-      # PREVIOUSLY_ENTERED[self.name]
-      PREVIOUSLY_ENTERED.each do |key,value|
-        puts "#{key}: #{value.join(", ")}".colorize(:yellow)
-      end
-    end
 
     # Message for too many inputs
     def too_many
@@ -85,7 +66,7 @@ module FindMovies
           'Actor' => movie.actors,
           'Director' => movie.directors
         }
-        classes[self.name].include?(self.find_by(name: input))
+        classes[self.name].include?(self.where("lower(name) = ?", input)[0])
       end
     end
 
