@@ -25,8 +25,6 @@ class Movie < ActiveRecord::Base
 
     if movies_with_keyword.empty? || keyword.empty?
       puts "Sorry, that keyword didn't return any matches".colorize(:red)
-      puts "Please enter another keyword".colorize(:light_magenta)
-      puts 'or type "back" to try a different criteria'.colorize(:light_magenta)
       find_movie_by_keyword
       return
     elsif keyword == 'back'
